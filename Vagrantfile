@@ -86,8 +86,11 @@ Vagrant.configure("2") do |config|
       rs.image = /Ubuntu/
     end
 
-    config.vm.provision :puppet do |puppet|
-        puppet.manifests_path = "puppet/manifests"
-        puppet.manifest_file = "dev-vagrant.pp"
+    #config.vm.provision :puppet do |puppet|
+    #    puppet.manifests_path = "puppet/manifests"
+    #    puppet.manifest_file = "dev-vagrant.pp"
+    #end
+    config.vm.provision :ansible do |ansible|
+        ansible.playbook = "ansible/playbook.yml"
     end
 end

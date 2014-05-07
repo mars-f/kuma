@@ -1,0 +1,61 @@
+---
+- hosts: all
+  sudo: true
+  tasks:
+    - name: Purge system packages that could conflict with our deps
+      apt: name={{ item }} state=absent purge=yes
+      with_items:
+        - python-setuptools
+        - python-virtualenv
+        - python-pip
+        - python-imaging
+        - python-mysqldb
+        - python-pylibmc
+        - python-jinja2
+        - python-coverage
+        - ipython
+        - python-sqlparse
+        - python-pyquery
+        - python-pygments
+        - pylint
+        - pyflakes
+        
+    - name: Create a wheels cache directory
+      file: dest=/home/vagrant/src/puppet/cache/wheels state=directory
+    
+    - name: Install pip
+      apt: name=python-pip
+    
+    - name: Install virtualenv
+      apt: name=python-virtualenv
+
+    - name: Install wheel
+      pip: name=wheel
+    
+    - name: Install our specific version of Django
+      pip: name=Django version=1.4.9
+    
+    - name: Download the mozilla wheels tarball
+      get_url:
+        url=https://s3-us-west-2.amazonaws.com/pkgs.mozilla.net/python/mdn/base_wheels.tar.gz
+        dest=/home/vagrant/src/puppet/cache/wheels/base_wheels.tar.gz
+        #force=yes
+    
+    - name: Unpack our new wheels
+      command:
+        chdir=/home/vagrant/src/puppet/cache/wheels
+        /bin/tar xzvf base_wheels.tar.gz
+    
+    - name: XXX Download pyelasticsearch separately until it's included in wheels
+      pip: name=pyelasticsearch version=0.6.1 virtualenv=/home/vagrant/env
+
+    - name: Install kuma requirements from wheels
+      pip:
+        requirements={{ item }}
+        chdir=/home/vagrant/src
+        extra_args='--no-index --find-links=puppet/cache/wheels/base_wheels'
+        virtualenv=/home/vagrant/env
+      with_items:
+        - requirements/prod.txt
+        - requirements/dev.txt
+        - requirements/compiled.txt

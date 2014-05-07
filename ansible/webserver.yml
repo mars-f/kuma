@@ -1,0 +1,5 @@
+---
+# Configure systems with the webserver role.
+- hosts: all
+  roles:
+    - webserver

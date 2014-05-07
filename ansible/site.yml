@@ -1,0 +1,6 @@
+---
+# Configure the MDN site from top to bottom
+
+- include: basics.yml
+- include: python.yml
+- include: webserver.yml
