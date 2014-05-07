@@ -1,8 +1,8 @@
 ---
 # Tasks for configuring our python application execution environment
 
-- name: Purge system packages that could conflict with our deps
-  apt: name={{ item }} state=absent purge=yes
+- name: Remove system packages that could conflict with our deps
+  apt: name={{ item }} state=absent
   with_items:
     - python-setuptools
     - python-virtualenv
@@ -48,6 +48,16 @@
 - name: XXX Download pyelasticsearch separately until it's included in wheels
   pip: name=pyelasticsearch version=0.6.1 virtualenv=/home/vagrant/env
 
+- name: XXX Hack prod.txt to remove the busted django-mozilla-product-details
+  shell:
+        chdir=/home/vagrant/src
+        cp requirements/prod.txt requirements/prod.hacked.txt && sed -i -e 's/django-mozilla-product-details@5a59a50b2f49f4ff555e87ebecc4fe690e71e7b0/django-mozilla-product-details@515d55ddf20688c71b54d77eb157eaee21214859/' requirements/prod.hacked.txt
+
+- name: XXX Hack prod.txt to remove the pystatsd - we don't use statsd any more?
+  shell:
+        chdir=/home/vagrant/src
+        sed -i -e '/pystatsd/d' requirements/prod.hacked.txt
+
 - name: Install kuma requirements from wheels
   pip:
     requirements={{ item }}
@@ -55,6 +65,10 @@
     extra_args='--no-index --find-links=puppet/cache/wheels/base_wheels'
     virtualenv=/home/vagrant/env
   with_items:
-    - requirements/prod.txt
+    - requirements/prod.hacked.txt
     - requirements/dev.txt
     - requirements/compiled.txt
+
+- name: XXX Clean up our hacks
+  file: name=/home/vagrant/src/requirements/prod.hacked.txt state=absent
+  
