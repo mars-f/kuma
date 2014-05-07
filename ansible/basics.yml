@@ -71,5 +71,3 @@
     
     - name: Install Foreman
       gem: name=foreman state=latest executable=/opt/vagrant_ruby/bin/gem
-    
-- include: python.yml

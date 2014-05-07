@@ -2,7 +2,7 @@
 # Configure apache for serving our application
 
 - name: Enable our required apache modules
-  apache_module: name={{ item }} state=present
+  command: /usr/sbin/a2enmod {{ item }}
   with_items:
     - env
     - setenvif
@@ -25,8 +25,10 @@
     - apache.crt
     - apache.key
 
-- name: Load the SSL module to use our new certs
-  apache_module: name=ssl state=present
+#- name: Load the SSL module to use our new certs
+#  apache2_module: name=ssl state=present
+#  notify:
+#    - restart apache
 
 - name: Install apache vhost config
   copy: src=mozilla-kuma-apache.conf dest=/etc/apache2/conf.d

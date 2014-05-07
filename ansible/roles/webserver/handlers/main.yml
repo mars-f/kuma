@@ -1,4 +1,4 @@
 ---
 # webserver handlers
 - name: restart apache
-  service: name=httpd state=reloaded
+  service: name=apache2 state=reloaded
