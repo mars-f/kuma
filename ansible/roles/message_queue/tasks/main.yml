@@ -1,0 +1,21 @@
+---
+# Configure the message queue service role.
+
+- name: Install RabbitMQ
+  apt: name=rabbitmq-server state=latest
+
+- name: Add the kuma vhost
+  rabbitmq_vhost: name=kuma node=rabbit@developer-local state=present
+
+- name: Add user 'kuma'
+  rabbitmq_user:
+    user=kuma
+    password=kuma
+    vhost=kuma
+    node=rabbit@developer-local
+    configure_priv=.*
+    read_priv=.*
+    write_priv=.*
+    state=present
+
+

@@ -3,3 +3,6 @@
 
 - include: basics.yml
 - include: webserver.yml
+- include: database.yml
+- include: kumascript.yml
+- include: message_queue.yml
