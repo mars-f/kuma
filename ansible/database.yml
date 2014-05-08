@@ -1,0 +1,6 @@
+---
+# Configure systems with the database role.
+- hosts: all
+  sudo: true
+  roles:
+    - database

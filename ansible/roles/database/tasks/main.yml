@@ -1,0 +1,18 @@
+---
+# Tasks to configure the database role
+
+- name: Install MySQL
+  apt: name=mysql-server state=present
+  notify:
+    - restart mysql
+
+- name: Copy MySQL configuration
+  copy: src=my.cnf dest=/etc/mysql/my.cnf mode=0644
+  notify:
+    - restart mysql
+
+- name: Copy or db initialization script to the remote host
+  copy: src=init.sql dest=/tmp
+
+- name: Set up database and database users
+  mysql_db: name=kuma state=import target=/tmp/init.sql

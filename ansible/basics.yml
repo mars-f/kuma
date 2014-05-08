@@ -54,12 +54,6 @@
     - name: Install Apache
       apt: name=apache2 
     
-    - name: Install MySQL
-      apt: name=mysql-server
-    
-    - name: Start MySQL
-      service: name=mysql state=started
-    
     - name: Install MySQL client C headers so Python can build against them
       apt: name=libmysqlclient-dev
     
