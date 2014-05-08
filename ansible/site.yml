@@ -1,12 +1,12 @@
 ---
 # Configure a stand-alone instance of MDN.
 
-#- include: basics.yml
+- include: basics.yml
 
 - hosts: all
   sudo: true
   roles:
-    - webserver
-    - database
+    - django
+    - mysql
     - kumascript
-    - message_queue
+    - rabbitmq
