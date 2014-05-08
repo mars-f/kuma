@@ -1,6 +1,0 @@
----
-# Configure systems with the message queue role.
-- hosts: all
-  sudo: true
-  roles:
-    - message_queue

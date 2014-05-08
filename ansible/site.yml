@@ -1,8 +1,12 @@
 ---
-# Configure the MDN site from top to bottom
+# Configure a stand-alone instance of MDN.
 
-- include: basics.yml
-- include: webserver.yml
-- include: database.yml
-- include: kumascript.yml
-- include: message_queue.yml
+#- include: basics.yml
+
+- hosts: all
+  sudo: true
+  roles:
+    - webserver
+    - database
+    - kumascript
+    - message_queue

@@ -1,6 +1,0 @@
----
-# Configure systems with the webserver role.
-- hosts: all
-  sudo: true
-  roles:
-    - webserver

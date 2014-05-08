@@ -1,6 +1,0 @@
----
-# Configure systems with the kumascript role.
-- hosts: all
-  sudo: true
-  roles:
-    - kumascript
