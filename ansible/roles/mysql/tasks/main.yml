@@ -11,8 +11,14 @@
   notify:
     - restart mysql
 
+- name: Check if our DB exists
+  mysql_db: name=kuma state=present
+  register: result
+
 - name: Copy or db initialization script to the remote host
   copy: src=init.sql dest=/tmp
+  when: result|changed
 
-- name: Set up database and database users
+- name: Set up database and database users if the DB is missing
   mysql_db: name=kuma state=import target=/tmp/init.sql
+  when: result|changed
