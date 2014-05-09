@@ -36,3 +36,21 @@
 
 - name: Install apache vhost config
   copy: src=mozilla-kuma-apache.conf dest=/etc/apache2/conf.d
+
+- name: Link uploads directory
+  file:
+    src=/home/vagrant/uploads
+    dest=/home/vagrant/src/media/uploads
+    state=link
+
+- name: Link webroot .htaccess
+  file:
+    name=/home/vagrant/src/webroot/.htaccess
+    src=/home/vagrant/src/configs/htaccess-without-mindtouch
+    state=link
+
+- name: Link www .htaccess
+  file:
+    name=/var/www/.htaccess
+    src=/home/vagrant/src/configs/htaccess-without-mindtouch
+    state=link
