@@ -54,8 +54,5 @@
     - name: Install Apache
       apt: name=apache2 
     
-    - name: Install MySQL client C headers so Python can build against them
-      apt: name=libmysqlclient-dev
-        
     - name: Install Foreman
       gem: name=foreman state=latest executable=/opt/vagrant_ruby/bin/gem

@@ -1,5 +1,6 @@
 ---
 # Configure a python appserver webhead
 
+- include: database.yml
 - include: python.yml
 - include: apache.yml

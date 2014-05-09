@@ -1,0 +1,5 @@
+---
+# Configure our database connection and schema
+
+- name: Add libraries necessary to build the MySQL DB client
+  apt: name=libmysqlclient-dev state=present        
