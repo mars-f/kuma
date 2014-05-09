@@ -1,6 +1,9 @@
 ---
 # Configure apache for serving our application
 
+- name: Install Apache
+  apt: name=apache2 state=present
+
 - name: Enable our required apache modules
   command: /usr/sbin/a2enmod {{ item }}
   with_items:
@@ -25,6 +28,7 @@
     - apache.crt
     - apache.key
 
+# XXX this doesn't work
 #- name: Load the SSL module to use our new certs
 #  apache2_module: name=ssl state=present
 #  notify:

@@ -51,8 +51,5 @@
         - libtidy-0.99-0
         - libtidy-dev
 
-    - name: Install Apache
-      apt: name=apache2 
-    
     - name: Install Foreman
       gem: name=foreman state=latest executable=/opt/vagrant_ruby/bin/gem

@@ -6,7 +6,8 @@
 - hosts: all
   sudo: true
   roles:
-    - django
+    - apache2
     - mysql
     - kumascript
     - rabbitmq
+    - django
