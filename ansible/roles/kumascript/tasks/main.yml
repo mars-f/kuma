@@ -1,0 +1,17 @@
+---
+# Configure the kumascript NodeJS service
+
+- name: Install NodeJS and npm
+  apt: name={{ item }} state=present
+  with_items:
+    - nodejs
+    - npm
+
+- name: Customize npmrc
+  copy: src=npmrc dest=/etc/npmrc mode=755
+
+- name: Install fibers
+  npm: name=fibers version=0.6.4 global=yes state=present
+
+- name: Install our local NodeJS server config
+  copy: src=kumascript_settings_local.json dest=/home/vagrant/src/.
