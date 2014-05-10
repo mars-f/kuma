@@ -1,0 +1,6 @@
+---
+# Configure basic aspects of the system
+
+- include: networking.yml
+- include: install-packages.yml
+- include: devenv.yml

@@ -1,0 +1,9 @@
+---
+# Configure networking
+
+- name: Install /etc/hosts, hostname, resolv.conf
+  copy: src={{ item }} dest=/etc/. mode=644
+  with_items:
+    - hosts
+    - hostname
+    - resolv.conf

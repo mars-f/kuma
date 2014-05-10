@@ -1,11 +1,10 @@
 ---
 # Configure a stand-alone instance of MDN.
 
-- include: basics.yml
-
 - hosts: all
   sudo: true
   roles:
+    - basics
     - apache2
     - mysql
     - kumascript

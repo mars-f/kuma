@@ -1,0 +1,39 @@
+---
+# Configure a few developer-friendly aspects of the system
+
+- name: Install Foreman
+  gem: name=foreman state=latest executable=/opt/vagrant_ruby/bin/gem
+
+- name: Install dev-friendly motd
+  copy: src=motd dest=/etc/. mode=644
+  
+- name: Generate en_US.utf8 locale
+  command: /usr/sbin/locale-gen en_US.utf8
+
+- name: Update en_US.utf8 locale
+  command: /usr/sbin/update-locale LC_ALL='en_US.utf8'
+
+- name: Open up the logs directory so devs can read it
+  file: name={{ item }} state=directory mode=777 owner=vagrant group=vagrant
+  with_items:
+    - /home/vagrant/logs
+    - /home/vagrant/uploads
+    - /home/vagrant/product_details_json
+    - /home/vagrant/mdc_pages
+
+- name: Install a bash_profile that sets $PATH, virtualenv, etc.
+  copy:
+    src=bash_profile
+    dest=/home/vagrant/.bash_profile
+    owner=vagrant
+    group=vagrant
+    mode=644
+
+- name: Create /home/vagrant/bin
+  file:
+    name=/home/vagrant/bin
+    state=directory
+    mode=0755
+    owner=vagrant
+    group=vagrant
+  

@@ -1,0 +1,52 @@
+---
+# Configure our system packages
+
+- name: Install the "Dead Snakes" PPA so we can get Python 2.6
+  apt_repository: repo='ppa:fkrull/deadsnakes'
+  
+- name: Run "apt-get update" before doing anything else
+  apt: update_cache=yes
+
+# This takes too long! :mars
+#- name: Run "apt-get dist-upgrade"
+#  apt: upgrade=dist
+
+- name: Install the Python2.6 runtime and C headers
+  apt: name={{ item }} 
+  with_items:
+    - python2.6
+    - python2.6-dev
+
+- name: Install our system dependencies
+  apt: name={{ item }} 
+  with_items:
+    - build-essential
+    - git
+    - subversion
+    - mercurial
+    - vim
+    - nfs-common
+    - openjdk-7-jdk
+    - tmux
+    - translate-toolkit
+    - gettext
+    - htop
+    - ack-grep
+    - locate
+    - sqlite3
+    - python-software-properties
+    - curl
+    - axel
+    - ruby
+    - libxml2-dev
+    - libxslt1.1
+    - libxslt1-dev
+    - libjpeg62
+    - libjpeg62-dev
+    - libfreetype6
+    - libfreetype6-dev
+    - libpng12-0
+    - libpng12-dev
+    - libtidy-0.99-0
+    - libtidy-dev
+
