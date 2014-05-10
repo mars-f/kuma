@@ -1,0 +1,5 @@
+---
+# Configure Django app settings
+
+- name: Install settings_local.py
+  copy: src=settings_local.py dest=/home/vagrant/src/.

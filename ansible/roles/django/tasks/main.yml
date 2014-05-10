@@ -3,3 +3,4 @@
 
 - include: python.yml
 - include: database.yml
+- include: settings.yml
