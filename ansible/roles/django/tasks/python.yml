@@ -18,6 +18,10 @@
     - python-pygments
     - pylint
     - pyflakes
+
+# XXX Is the mysql db connector installed here, or in an earlier step?
+- name: Add libraries necessary to build the MySQL DB client
+  apt: name=libmysqlclient-dev state=present        
     
 - name: Create a wheels cache directory
   file: dest=/home/vagrant/src/puppet/cache/wheels state=directory

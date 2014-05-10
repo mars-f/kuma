@@ -1,5 +1,34 @@
 ---
 # Configure our database connection and schema
 
-- name: Add libraries necessary to build the MySQL DB client
-  apt: name=libmysqlclient-dev state=present        
+- name: Update mozilla product details
+  command:
+    /home/vagrant/env/bin/python ./manage.py update_product_details
+    creates=/home/vagrant/product_details_json/firefox_versions.json
+
+- name: Schema migration
+  command:
+    chdir=/home/vagrant/src
+    /home/vagrant/env/bin/python ./vendor/src/schematic/schematic migrations/
+
+- name: South migration
+  django_manage:
+    command=migrate
+    app_path=/home/vagrant/src
+    virtualenv=/home/vagrant/env
+
+- name: Reindex elasticsearch
+  command:
+    chdir=/home/vagrant/src
+    /home/vagrant/env/bin/python manage.py reindex -p 5
+
+- name: Does data exist in the feeds table?
+  shell: "/usr/bin/mysql -B -uroot kuma -e'select count(*) from feeder_entry' | grep '0'"
+  register: has_feeds
+
+- name: Update feeds
+  command:
+    chdir=/home/vagrant/src
+    /home/vagrant/env/bin/python ./manage.py update_feeds
+  when: has_feeds|failed
+  
