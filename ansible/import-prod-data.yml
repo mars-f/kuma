@@ -1,0 +1,35 @@
+---
+# Import the MDN production database data.
+
+# Import Django DB data
+- hosts: all
+  tasks:
+    - name: Download the MDN Django database
+      get_url:
+        url=http://people.mozilla.com/~lorchard/mdn_django.sql.gz
+        dest=/tmp/mdn_django.sql.gz
+
+    - name: Import the MDN Django database
+      sudo: true
+      mysql_db: name=kuma state=import target=/tmp/mdn_django.sql.gz
+
+# Import wiki DB data
+- hosts: all
+  tasks:
+    - name: Download the MDN wiki database
+      get_url:
+        url=http://people.mozilla.com/~lorchard/mdn_wikidb.sql.gz
+        dest=/tmp/mdn_wikidb.sql.gz
+    
+    - name: Import the MDN wiki database
+      sudo: true
+      mysql_db: name=wikidb state=import target=/tmp/mdn_wikidb.sql.gz
+  
+# Post-import DB fixes
+- hosts: all
+  tasks:
+    - name: Copy the DB fixes file to the remote host
+      copy: src=postimport.sql dest=/tmp/.
+    
+    - name: Execute db fixup SQL
+      shell: "cat files/ postimport.sql | /usr/bin/mysql -uroot"
