@@ -26,14 +26,11 @@
 - name: Create a wheels cache directory
   file: dest=/home/vagrant/src/puppet/cache/wheels state=directory
 
-- name: Install pip
-  apt: name=python-pip
+#- name: Install pip
+#  apt: name=python-pip
 
-- name: Install virtualenv
+- name: Install python-virtualenv package
   apt: name=python-virtualenv
-
-- name: Install wheel
-  pip: name=wheel
 
 - name: Install our specific version of Django
   pip: name=Django version=1.4.9
@@ -49,7 +46,24 @@
     chdir=/home/vagrant/src/puppet/cache/wheels
     /bin/tar xzvf base_wheels.tar.gz
 
+- name: Create our virtualenv if it doesn't already exist
+  sudo: false
+  command:
+    creates=/home/vagrant/env
+    /usr/bin/virtualenv --python=/usr/bin/python2.6 /home/vagrant/env
+
+- name: Upgrade virtualenv pip to the latest release of pip
+  pip:
+    name=pip
+    state=latest
+    virtualenv=/home/vagrant/env
+
+- name: Install wheel
+  sudo: false
+  pip: name=wheel state=present virtualenv=/home/vagrant/env
+
 - name: XXX Download pyelasticsearch separately until it's included in wheels
+  sudo: false
   pip: name=pyelasticsearch version=0.6.1 virtualenv=/home/vagrant/env
 
 - name: XXX Hack prod.txt to remove the busted django-mozilla-product-details
@@ -63,10 +77,12 @@
         sed -i -e '/pystatsd/d' requirements/prod.hacked.txt
 
 - name: Install kuma requirements from wheels
+  sudo: false
   pip:
     requirements={{ item }}
     chdir=/home/vagrant/src
-    extra_args='--no-index --find-links=puppet/cache/wheels/base_wheels'
+    executable=/home/vagrant/env/bin/pip
+    extra_args='--no-index --find-links=file:///home/vagrant/src/puppet/cache/wheels/base_wheels'
     virtualenv=/home/vagrant/env
   with_items:
     - requirements/prod.hacked.txt

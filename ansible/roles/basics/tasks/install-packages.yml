@@ -1,6 +1,9 @@
 ---
 # Configure our system packages
 
+- name: Install python-pycurl, which everything else needs
+  apt: name=python-pycurl state=present
+
 - name: Install the "Dead Snakes" PPA so we can get Python 2.6
   apt_repository: repo='ppa:fkrull/deadsnakes'
   
