@@ -16,6 +16,7 @@
     - proxy
     - proxy_http
     - vhost_alias
+    - ssl
   notify:
     - restart apache
 
@@ -27,12 +28,6 @@
   with_items:
     - apache.crt
     - apache.key
-
-# XXX this doesn't work
-#- name: Load the SSL module to use our new certs
-#  apache2_module: name=ssl state=present
-#  notify:
-#    - restart apache
 
 - name: Install apache vhost config
   copy: src=mozilla-kuma-apache.conf dest=/etc/apache2/conf.d
